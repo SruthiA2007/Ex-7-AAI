@@ -1,9 +1,9 @@
-<H3>ENTER YOUR NAME</H3>
-<H3>ENTER YOUR REGISTER NO.</H3>
-<H3>EX. NO.7</H3>
-<H3>DATE:</H3>
+<H3>NAME : SRUTHI A </H3>
+<H3>REGISTER NO : 212224440162 </H3>
+<H3>EX.NO : 9 </H3>
 <H1 ALIGN =CENTER>Implementation of Text  Summarization</H1>
-<H3>Aim: to perform automatic text summarization using Natural Language Processing (NLP) techniques. </H3> 
+<H3>Aim: </H3> 
+To perform automatic text summarization using Natural Language Processing (NLP) techniques. 
  <BR>
 <h3>Algorithm:</h3>
 Step 1 Import necessary libraries for natural language processing tasks.<BR>
@@ -18,11 +18,105 @@ Step 5: Construct the main program to read the paragraph  and perform text summa
       - Generate and print the text summary using the  Text Summarization function<br>
 <H3>Program:</H3>
 
-Insert your code here
+```python
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.stem import PorterStemmer
+
+# Download required packages
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+
+def preprocess_text(text):
+    # Tokenize text into words
+    words = word_tokenize(text)
+
+    # Remove stopwords and punctuation
+    stop_words = set(stopwords.words('english'))
+
+    filtered_words = [
+        word for word in words
+        if word.lower() not in stop_words and word.isalnum()
+    ]
+
+    # Stemming
+    stemmer = PorterStemmer()
+
+    stemmed_words = [
+        stemmer.stem(word)
+        for word in filtered_words
+    ]
+
+    return stemmed_words
+
+def generate_summary(text, num_sentences=3):
+    # Tokenize into sentences and remove extra spaces/newlines
+    sentences = [
+        sentence.strip()
+        for sentence in sent_tokenize(text)
+    ]
+
+    # Preprocess text
+    preprocessed_text = preprocess_text(text)
+
+    # Calculate word frequencies
+    word_frequencies = nltk.FreqDist(preprocessed_text)
+
+    # Dictionary for sentence scores
+    sentence_scores = {}
+
+    # Score each sentence
+    for sentence in sentences:
+
+        for word, freq in word_frequencies.items():
+
+            if word in sentence.lower():
+
+                if sentence not in sentence_scores:
+                    sentence_scores[sentence] = freq
+
+                else:
+                    sentence_scores[sentence] += freq
+
+    # Select top N sentences
+    summary_sentences = sorted(
+        sentence_scores,
+        key=sentence_scores.get,
+        reverse=True
+    )[:num_sentences]
+
+    # Join summary sentences properly aligned
+    return '\n    '.join(summary_sentences)
+
+
+if __name__ == "__main__":
+    input_text = """
+    The piano sat silently in the corner of the room.
+    Nobody could remember the last time it had been played.
+    The little girl walked up to it and hit a few of the keys.
+    The sound of the piano rang throughout the house for the first time in years.
+    In the upstairs room, confined to her bed, the owner of the house had tears in her eyes.
+    """
+
+    # Generate summary
+    summary = generate_summary(input_text)
+
+    # Print original text
+    print("\nOriginal Text:")
+    print(input_text)
+
+    # Print summary
+    print("\nSummary:\n")
+    print("    " + summary + '\n')
+
+```
 
 <H3>Output</H3>
 
-Show your results here
+<img width="1237" height="450" alt="image" src="https://github.com/user-attachments/assets/fe557f81-daa5-4bb7-aff3-750b5ce8d958" />
+
 
 <H3>Result:</H3>
 Thus ,the program to perform the Text summarization is executed sucessfully.
